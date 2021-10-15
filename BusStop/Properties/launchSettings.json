@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BusStop": {
+      "commandName": "Project",
+      "commandLineArgs": "F:\\dotNet\\Demos\\iTextAssignment\\BusStop\\BusStop\\Input.txt"
+    }
+  }
+}
