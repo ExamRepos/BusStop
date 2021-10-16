@@ -1,6 +1,6 @@
 # BusStop
 
-![dotnet package](https://github.com/ExamRepos/BusStop/actions/workflows/main.yml/badge.svg)
+![Build](https://github.com/ExamRepos/BusStop/actions/workflows/main.yml/badge.svg)
 
 Console application, created to solve a bus time table problem.
 
