@@ -22,13 +22,9 @@ namespace BusStop.Domain.IO
             await fileWriter.WriteFileAsync(filePath, formattedTimeTable, cancellationToken).ConfigureAwait(false);
         }
 
-        private string GetFormattedTimeTable(TimeTable timeTable)
+        private static string GetFormattedTimeTable(TimeTable timeTable)
         {
-            var orderedRecords = timeTable.Services
-                .OrderByDescending(x => x.CompanyId)
-                .ThenBy(x => x.DepartureTime);
-
-            var groupedServiceRecordsForCompany = orderedRecords
+            var groupedServiceRecordsForCompany = timeTable.Services
                 .GroupBy(x => x.CompanyId)
                 .Select(GetServiceRecordsForCompany);
 
@@ -37,21 +33,23 @@ namespace BusStop.Domain.IO
                 return string.Empty;
             }
 
-            var result = groupedServiceRecordsForCompany.Aggregate((x1, x2) => x1 + Environment.NewLine + Environment.NewLine + x2);
+            var result = string.Join(Environment.NewLine + Environment.NewLine, groupedServiceRecordsForCompany);
 
             return result;
         }
 
-        private string GetServiceRecordsForCompany(IGrouping<string, TimeTableService> group)
+        private static string GetServiceRecordsForCompany(IGrouping<string, TimeTableService> group)
         {
-            string result = group
-                .Select(GetServiceLine)
-                .Aggregate((x1, x2) => x1 + Environment.NewLine + x2);
+            var services = group
+                .OrderBy(x => x.DepartureTime)
+                .Select(GetService);
+
+            string result = string.Join(Environment.NewLine, services);
 
             return result;
         }
 
-        private string GetServiceLine(TimeTableService service)
+        private static string GetService(TimeTableService service)
         {
             string result = FormattableString.Invariant($"{service.CompanyId} {service.DepartureTime:HH:mm} {service.ArrivalTime:HH:mm}");
 
