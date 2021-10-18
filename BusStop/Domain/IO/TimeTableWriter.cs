@@ -26,6 +26,7 @@ namespace BusStop.Domain.IO
         {
             var groupedServiceRecordsForCompany = timeTable.Services
                 .GroupBy(x => x.CompanyId)
+                .OrderByDescending(x => x.Key)
                 .Select(GetServiceRecordsForCompany);
 
             if (!groupedServiceRecordsForCompany.Any())
