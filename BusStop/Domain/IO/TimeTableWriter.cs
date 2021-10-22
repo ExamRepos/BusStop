@@ -29,11 +29,6 @@ namespace BusStop.Domain.IO
                 .OrderByDescending(x => x.Key)
                 .Select(GetServiceRecordsForCompany);
 
-            if (!groupedServiceRecordsForCompany.Any())
-            {
-                return string.Empty;
-            }
-
             var result = string.Join(Environment.NewLine + Environment.NewLine, groupedServiceRecordsForCompany);
 
             return result;
